@@ -64,8 +64,8 @@ async def start_command(client: Client, message: Message):
         reply_markup = InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("😊 About Me", callback_data = "about"),
-                    InlineKeyboardButton("🔒 Close", callback_data = "close")
+                    InlineKeyboardButton("😊 Информация", callback_data = "about"),
+                    InlineKeyboardButton("🔒 Закрыть", callback_data = "close")
                 ]
             ]
         )
@@ -84,12 +84,12 @@ async def cb_handler(client: Bot, query: CallbackQuery):
     data = query.data
     if data == "about":
         await query.message.edit_text(
-            text = f"<b>○ Creator : <a href='tg://user?id={OWNER_ID}'>This Person</a>\n○ Language : <code>Python3</code>\n○ Library : <a href='https://docs.pyrogram.org/'>Pyrogram asyncio {__version__}</a>\n○ Source Code : <a href='https://github.com/CodeXBotz/File-Sharing-Bot'>Click here</a>\n○ Channel : @CodeXBotz\n○ Support Group : @CodeXBotzSupport</b>",
+            text = f"<b>○ Создатель : <a href='tg://user?id={OWNER_ID}'>White Prime</a>\n○ Канал №1 : @ITHard\n○ Канал №2 : @ITHardNews",
             disable_web_page_preview = True,
             reply_markup = InlineKeyboardMarkup(
                 [
                     [
-                        InlineKeyboardButton("🔒 Close", callback_data = "close")
+                        InlineKeyboardButton("🔒 Закрыть", callback_data = "close")
                     ]
                 ]
             )
@@ -104,7 +104,7 @@ async def cb_handler(client: Bot, query: CallbackQuery):
 
 @Bot.on_message(filters.private & filters.user(ADMINS) & ~filters.command(['start','batch']))
 async def channel_post(client: Client, message: Message):
-    reply_text = await message.reply_text("Please Wait...!", quote = True)
+    reply_text = await message.reply_text("Подождите...!", quote = True)
     try:
         post_message = await message.copy(chat_id = CHANNEL_ID, disable_notification=True)
     except FloodWait as e:
@@ -118,15 +118,15 @@ async def channel_post(client: Client, message: Message):
     base64_bytes = base64.b64encode(string_bytes)
     base64_string = base64_bytes.decode("ascii")
     link = f"https://t.me/{client.username}?start={base64_string}"
-    reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("🔁 Share URL", url=f'https://telegram.me/share/url?url={link}')]])
-    await reply_text.edit(f"<b>Here is your link</b>\n\n{link}", reply_markup=reply_markup, disable_web_page_preview = True)
+    reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("🔁 Ссылка", url=f'https://telegram.me/share/url?url={link}')]])
+    await reply_text.edit(f"<b>Ссылка на загрузку</b>\n\n{link}", reply_markup=reply_markup, disable_web_page_preview = True)
 
 
 @Bot.on_message(filters.private & filters.user(ADMINS) & filters.command('batch'))
 async def batch(client: Client, message: Message):
     while True:
         try:
-            first_message = await client.ask(text = "Forward the First Message from the DB Channel (with Quotes)..", chat_id = message.from_user.id, filters=filters.forwarded, timeout=30)
+            first_message = await client.ask(text = "Перешлите это сообщение в канал (или заметки)..", chat_id = message.from_user.id, filters=filters.forwarded, timeout=30)
         except:
             return
         if first_message.forward_from_chat:
